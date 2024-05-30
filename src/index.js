@@ -21,7 +21,7 @@ async function scrapeWebsite(url) {
 				const poster2 = $(el3).find("[type=image/jpeg]").attr('data-srcset')
 				if (poster1 !== "" && poster1 !== undefined){poster = poster1}
 				else{poster = poster2}
-				poster = poster.split(",")[0] + ".jpg"
+				poster = poster.replace("s166", "s592").split(",")[0] + ".jpg"
 				result.push({'provider': provider, 'title': title, 'img': poster, 'link': link})
 			})
 		})
@@ -41,13 +41,13 @@ function generateRSS(data) {
 	let rssItems = data.map(film => {
 		return `
             <item>
-                <title>${film.title}</title>
+                <title>Disponibile ${film.title} su ${film.provider}<</title>
                 <link>${film.link}</link>
-                <description>Disponibile ${film.title} su ${film.provider}</description>
-                <author>${film.provider}</author>
                 <enclosure url="${film.img}" type="image/jpeg" />
             </item>
         `;
+		//<description></description>
+		//<author>${film.provider}</author>
 	}).join('')
 
 	return `
@@ -66,15 +66,12 @@ function generateRSS(data) {
 
 export default {
 	async fetch(request, env, ctx) {
-		const url = "https://www.justwatch.com/it/film/novit%C3%A0?providers=atp,dnp,mbi,nfx,ntv,prv,rai,uci,wki"
+		const url = "https://www.justwatch.com/it/film/novit%C3%A0?providers=atp,dnp,dpe,mbi,msp,nfx,ntv,pmp,prv,rai,skg,vvv"
 		const resp = await scrapeWebsite(url)
 		const rssFeed = generateRSS(resp);
 		return new Response(rssFeed, {
 			headers: { 'Content-Type': 'application/rss+xml' }
 		})
-		//return new Response(JSON.stringify(resp), {
-		//	headers: { 'Content-Type': 'application/json' }
-		//})
 	},
 };
 
