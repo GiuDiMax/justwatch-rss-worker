@@ -41,7 +41,7 @@ function generateRSS(data) {
 	let rssItems = data.map(film => {
 		return `
             <item>
-                <title>Disponibile ${film.title} su ${film.provider}<</title>
+                <title>Disponibile "${film.title}" su ${film.provider}</title>
                 <link>${film.link}</link>
                 <enclosure url="${film.img}" type="image/jpeg" />
             </item>
@@ -66,7 +66,7 @@ function generateRSS(data) {
 
 export default {
 	async fetch(request, env, ctx) {
-		const url = "https://www.justwatch.com/it/film/novit%C3%A0?providers=atp,dnp,dpe,mbi,msp,nfx,ntv,pmp,prv,rai,skg,vvv"
+		const url = "https://www.justwatch.com/it/film/novit%C3%A0?providers=atp,dnp,mbi,nfx,pmp,prv,rai"
 		const resp = await scrapeWebsite(url)
 		const rssFeed = generateRSS(resp);
 		return new Response(rssFeed, {
