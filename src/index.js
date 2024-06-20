@@ -9,7 +9,7 @@ async function scrapeWebsite(url) {
 
 		const providers = $('.provider-timeline')
 		providers.each((_, el) => {
-			let sp = {}
+			//let sp = {}
 			const provider = $(el).find('.provider-timeline__logo').attr('title')
 			const films = $(el).find('.horizontal-title-list__item')
 			films.each((_, el2) => {
@@ -66,7 +66,7 @@ function generateRSS(data) {
 }
 
 export default {
-	async fetch(request, env, ctx) {
+	async fetch() {
 		const url = "https://www.justwatch.com/it/film/novit%C3%A0?providers=atp,dnp,mbi,nfx,pmp,prv,rai"
 		const resp = await scrapeWebsite(url)
 		const rssFeed = generateRSS(resp);
