@@ -16,13 +16,14 @@ async function scrapeWebsite(url) {
 				const el3 = $(el2).find('.picture-comp')
 				const link = "https://www.justwatch.com" + $(el2).find('a').attr("href")
 				const title = $(el3).find('.picture-comp__img').attr("alt")
-				let poster = ""
-				const poster1 = $(el3).find("[type=image/jpeg]").attr('srcset')
-				const poster2 = $(el3).find("[type=image/jpeg]").attr('data-srcset')
-				if (poster1 !== "" && poster1 !== undefined){poster = poster1}
-				else{poster = poster2}
-				poster = poster.replace("s166", "s592").split(",")[0] + ".jpg"
-				result.push({'provider': provider, 'title': title, 'img': poster, 'link': link})
+				result.push({'provider': provider, 'title': title, 'link': link})
+				// let poster = ""
+				// const poster1 = $(el3).find("[type=image/jpeg]").attr('srcset')
+				// const poster2 = $(el3).find("[type=image/jpeg]").attr('data-srcset')
+				// if (poster1 !== "" && poster1 !== undefined){poster = poster1}
+				// else{poster = poster2}
+				// poster = poster.replace("s166", "s592").split(",")[0] + ".jpg"
+				// result.push({'provider': provider, 'title': title, 'img': poster, 'link': link})
 			})
 		})
 		return result
@@ -41,11 +42,11 @@ function generateRSS(data) {
 	let rssItems = data.map(film => {
 		return `
             <item>
-                <title>Disponibile "${film.title}" su ${film.provider}</title>
+                <title>${film.title} | ${film.provider}</title>
                 <link>${film.link}</link>
-                <enclosure url="${film.img}" type="image/jpeg" />
             </item>
         `;
+		//<enclosure url="${film.img}" type="image/jpeg"/>
 		//<description></description>
 		//<author>${film.provider}</author>
 	}).join('')
